@@ -89,7 +89,7 @@ class Deck:
             self.create_deck()
         else:
             drawn_card = self.deck.pop()
-            print("\nYou drew a card. (Show hand to show card drawn)")
+            # print("\nYou drew a card. (Show hand to show card drawn)")
 
             return drawn_card
     
@@ -102,7 +102,7 @@ class Deck:
         else:
             for i in range(num_cards):
                 drawn_cards.append(self.deck.pop())
-            print("\nCards drawn. (Show hand to show cards drawn)")
+            # print("\nCards drawn. (Show hand to show cards drawn)")
 
         return drawn_cards
 
