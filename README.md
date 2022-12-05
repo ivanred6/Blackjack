@@ -4,7 +4,7 @@ Simple blackjack game made in Python with ASCII card visuals.
 ![Gameplay Demo](images/demo.gif)
 
 ## Running the Program
-Linux users can run the game by typing python3 blackjack.py in the terminal.
+Users can run the game by typing ``python3 blackjack.py`` in the terminal.
 
 ## Game Objective
 
