@@ -1,7 +1,7 @@
 '''
 A simple blackjack game
 '''
-import time
+import time, os, csv
 import collections
 from card_style import make_card
 from card_engine import *
@@ -120,8 +120,34 @@ def d_hit(hand, deck):
     print('\nDealer hand:', total_value(hand))
     hand.show_info()
 
+# Initialise the data file
+def setup_data(filename):
+    if not filename.endswith('.csv'):
+        filename += '.csv'
+    
+    if os.path.isfile(filename):
+        return os.path.abspath(filename)
+    else:
+        with open(filename, 'w', newline='') as file:
+            # Write header if needed
+            writer = csv.writer(file)
+            # writer.writerow(['Header1', 'Header2', 'Header3'])
+        return os.path.abspath(filename)
+    return os.path.abspath(filename)
+
+# Add hand to data file
+def record_hand(filename, row_data):
+    filepath = setup_data(filename)
+    
+    with open(filepath, 'a', newLine='') as file:
+        writer = csv.writer(file)
+        writer.writerow(row_data)
+
+
 # Play
 def play():
+    absolute_filepath = setup_data('saveddata.csv')
+    currentscore = [0, 0, 0] # Win, Loss, Draw
     print("Welcome to BlackJack!")
     print("---------------------")
     while True:
@@ -140,6 +166,7 @@ def play():
                 dealer_open(dealer)
                 if total_value(dealer) != 21:
                     print("Blackjack! Player wins!\n")
+                    currentscore[0] += 1
                     break
                 else:
                     print("Tie!\n")
@@ -151,12 +178,15 @@ def play():
                     dealer_open(dealer)
                     if total_value(dealer) == 21:
                         print("Tie!\n")
+                        currentscore[2] += 1
                         break
                     else:
                         print("Blackjack! Player wins!\n")
+                        currentscore[0] += 1
                         break
                 elif total_value(player) > 21:
                     print("Player bust! Dealer wins!\n")
+                    currentscore[1] += 1
                     break
 
             if choice.lower() == 's':
@@ -166,39 +196,53 @@ def play():
                         time.sleep(1.5)
                     if total_value(dealer) == total_value(player):
                         print("Tie!\n")
+                        currentscore[2] += 1
                         break 
                     if total_value(dealer) == 21:
                         print("Dealer wins!\n")
+                        currentscore[1] += 1
                         break    
                     if total_value(dealer) > 21:
                         print("Dealer bust! Player wins!\n")
+                        currentscore[0] += 1
                         break    
                     if total_value(dealer) > total_value(player):
                         print("Dealer wins!\n")
+                        currentscore[1] += 1
                         break    
                     else:
                         print("Player wins!\n")
+                        currentscore[0] += 1
                         break
                 else:
                     dealer_open(dealer)
                     if total_value(dealer) == total_value(player):
                         print("Tie!\n")
+                        currentscore[2] += 1
                         break
                     if total_value(dealer) == 21:
                         print("Dealer wins!\n")
+                        currentscore[1] += 1
                         break
                     if total_value(dealer) > 21:
                         print("Dealer bust! Player wins!\n")
+                        currentscore[0] += 1
                         break
                     if total_value(dealer) > total_value(player):
                         print("Dealer wins!\n")
+                        currentscore[1] += 1
                         break
                     else:
                         print("Player wins!\n")
+                        currentscore[0] += 1
                         break
 
             if choice.lower() == 'q':
                 print("Thanks for playing, goodbye!\n")
+                print("You have won: " + str(currentscore[0]) + " hands")
+                print("You have lost: " + str(currentscore[1]) + " hands")
+                print("You have drawn: " + str(currentscore[2]) + " hands")
+                
                 quit()
             continue
         print("----------- Next Round -----------")
