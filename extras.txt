@@ -1,0 +1,4 @@
+Add: 
+* Ability to save all historic hands and play combinations
+* Running statistics of play
+* Play through a whole deck (and have up to 8 decks?)
